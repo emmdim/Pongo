@@ -1,0 +1,53 @@
+from django.db import models
+
+# Create your models here.
+
+
+class Flow(models.Model):
+    internalip = models.CharField(max_length=200)
+    externalip = models.CharField(max_length=200)
+    internalport = models.IntegerField()
+    externalport = models.IntegerField()
+    idletime = models.IntegerField()
+    hardtime = models.IntegerField()
+    
+    def __unicode__(self):
+        return "Internal: IP=" + self.internalip + " port=" + str(self.internalport) +", External: IP=" + self.externalip +  " port=" + str(self.externalport)
+
+class User(models.Model):
+    name = models.CharField(max_length=200)
+
+    def __unicode__(self):
+        return self.name
+
+
+# Each dpid/Switch represents one node
+class Node(models.Model):
+    name = models.CharField(max_length=200)
+    dpid = models.CharField(max_length=200)
+
+    def __unicode__(self):
+        return self.name
+
+class Link(models.Model):
+    class Meta :
+
+        unique_together = (("node1", "node2"),)
+
+    LINK_STATE = (
+        ('up','Up'),
+        ('down','Down'),
+    )
+    #node1 = models.ForeignKey(Node, null=True, unique=True, related_name='node1')
+    node1 = models.OneToOneField(Node, related_name='node1')
+    #node2 = models.ForeignKey(Node, null=True, unique=True, related_name='node2')
+    node2 = models.OneToOneField(Node, related_name='node2')
+    state = models.CharField(max_length=4, choices=LINK_STATE)
+
+    def __unicode__(self):
+        return self.node1.name + "_to_" + self.node2.name
+
+
+
+
+

@@ -122,6 +122,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     #'topologic',
     'poxweb',
+    #'poxweb.ext',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
@@ -156,3 +157,5 @@ LOGGING = {
         },
     }
 }
+
+DEBUG = True

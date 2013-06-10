@@ -1,0 +1,16 @@
+from django.conf.urls import patterns, url
+
+from poxweb import views
+
+urlpatterns = patterns('',
+    # ex: /poxweb/
+    url(r'^$', views.index, name='index'),
+    # ex: /poxweb/node/
+    url(r'^node/$', views.all_nodes, name='all_nodes'),
+    # ex: /poxweb/link/
+    url(r'^link/$', views.all_links, name='all_links'),
+    # ex: /poxweb/node/5
+    url(r'^node/(?P<node_id>\d+)/$', views.a_node, name='a_node'),
+    # ex: /poxweb/link/5
+    url(r'^link/(?P<link_id>\d+)/$', views.a_link, name='a_link'),
+)

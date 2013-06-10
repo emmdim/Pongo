@@ -1,0 +1,40 @@
+# Create your views here.
+from django.http import HttpResponse
+from django.template import Context, loader
+from django.shortcuts import render
+
+from poxweb.models import Node, Link
+
+def index(request):
+    return HttpResponse("Hello blah blah blah")
+
+def a_node(request, node_id):
+    return HttpResponse("You are looking at node %s." % node_id)
+
+def all_nodes(request):
+    all_nodes = Node.objects.all()
+    template = loader.get_template('poxweb/node.html')
+    
+    # Classic
+    #output = ', '.join([p.name for p in all_nodes])
+    #return HttpResponse("All the nodes are:  %s." % output)
+    
+    # Simple Template
+    #context = Context({
+    #    'all_nodes': all_nodes,
+    #})
+    #return HttpResponse(template.render(context))
+
+    # Shortcut
+    context = { 'all_nodes': all_nodes}
+    return render(request,'poxweb/node.html', context)
+
+    
+
+def a_link(request, link_id):
+    return HttpResponse("You are looking at link %s." % link_id)
+
+def all_links(request):
+    all_links = Link.objects.all()
+    output = ', '.join([p.__unicode__() for p in all_links])
+    return HttpResponse("All the links are:  %s." % output)

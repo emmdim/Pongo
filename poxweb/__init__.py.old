@@ -1,0 +1,27 @@
+import os
+import sys
+
+pox = os.path.join( os.path.dirname(os.path.realpath(__file__)),"pox.py")
+#sys.path.append(os.path.dirname(os.path.realpath(__file__)))
+mytest = os.path.join( os.path.dirname(os.path.realpath(__file__)),"ext/mytest")
+
+#sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),'ext'))
+
+#sys.path.append(os.path.abspath(os.path.join(sys.path[0], 'pox')))
+
+#sys.path.append(os.path.abspath(os.path.join(sys.path[0], 'pox')))
+#sys.path.append(os.path.abspath(os.path.join(sys.path[0], 'ext')))
+
+
+#from pox.boot import boot
+#boot()
+import subprocess
+import logging
+#subprocess.call(["python", pox, "log.level--DEBUG"," mytest"],stdout=subprocess.PIPE)
+logging.basicConfig(level=logging.DEBUG)
+s = subprocess.Popen(["python", pox, "mytest" ],stdout=subprocess.PIPE)
+while True:
+    line = s.stdout.readline()
+    if not line:
+        break
+    logging.info(line)
