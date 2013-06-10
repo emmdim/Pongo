@@ -2,10 +2,12 @@ from poxweb.models import Sliver, Link
 
 ### SLIVER
 
+# Get the dict form of a sliver object
 def get_sliver(sliver_id):
     return Sliver.objects.get(id=sliver_id).__dict__
 
 
+# Create a Sliver model
 def create_sliver(sliver_id,node_id,dpid,switch_mac):
     s = Sliver(sliver_id=sliver_id , node_id=node_id, dpid=dpid, switch_mac=switch_mac)
     s.save()
@@ -28,10 +30,11 @@ def get_sliver_info(sliver_id):
 
 ### LINK
 
+# Get all links in dict form
 def get_links():
     return Link.objects.values()
 
-
+# Add new link
 def add_link(sliver1, sliver2):
-    s = Link(sliver1=sliver1 , sliver2=sliver2 , state='up')
+    s = Link(sliver1=sliver1 , sliver2=sliver2)
     s.save()

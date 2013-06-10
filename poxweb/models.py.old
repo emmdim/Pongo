@@ -3,6 +3,13 @@ from django.db import models
 from django.core.exceptions import ValidationError
 
 
+import sys
+import os
+import subprocess
+import signal
+
+
+
 class Flow(models.Model):
     internalip = models.CharField(max_length=200)
     externalip = models.CharField(max_length=200)
@@ -40,13 +47,32 @@ class Sliver(models.Model):
 
 class Link(models.Model):
 
-    #LINK_STATE = (
-    #    ('up','Up'),
-    #    ('down','Down'),
-    #)
+
+    def delete(self, *args, **kwargs):
+        pox = subprocess.check_output("ps aux | grep pox.py | grep -v grep | awk {'print $2'}", shell = True)
+        if pox:
+            pox = int(pox)
+            print('Pox pid is:')
+            print(pox)
+            #os.kill(pox,signal.SIGUSR2)
+            f = open('/dev/shm/Pongo','w')
+            f.write(self.sliver1.sliver_id)
+            f.write('\n')
+            f.write(self.sliver2.sliver_id)
+            f.close
+            #subprocess.call("echo \'" + self.sliver1.sliver_id + " " + self.sliver2.sliver_id +  "\' > /dev/shm/Pongo ",shell = True)
+            #subprocess.call("echo 2 > /tmp/Pongo ",shell = True)
+        super(Link, self).delete(*args, **kwargs)
+
+
+
+    LINK_STATE = (
+        ('up','Up'),
+        ('down','Down'),
+    )
     sliver1 = models.ForeignKey(Sliver, null=True, unique=False, related_name='sliver1')
     sliver2 = models.ForeignKey(Sliver, null=True, unique=False, related_name='sliver2')
-    #state = models.CharField(max_length=4, choices=LINK_STATE)
+    state = models.CharField(max_length=4, choices=LINK_STATE)
 
     def __unicode__(self):
         return "sliver"+self.sliver1.sliver_id + "_to_sliver" + self.sliver2.sliver_id
