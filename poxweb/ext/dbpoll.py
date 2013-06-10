@@ -31,10 +31,16 @@ class Dbpoll(Task) :
     # Checks for deleted links
     def run(self):
         oldlinks = db.get_links()
+        oldslivers = db.get_slivers()
         while True:
             log.debug('loop')
             newlinks = db.get_links()
-            if len(newlinks) < len(oldlinks):
+            log.debug(len(oldlinks))
+            log.debug(len(newlinks))
+            newslivers = db.get_slivers()
+            log.debug(len(oldslivers))
+            log.debug(len(newslivers))
+            if len(newlinks) < len(oldlinks) and len(oldslivers) == len(newslivers):
                 log.debug("New Links")
                 #newlinks = self.objList2dict(newlinks)
                 log.debug(newlinks)
@@ -48,6 +54,7 @@ class Dbpoll(Task) :
             # Outside the if to catch also new links
             # not only dropped ones
             oldlinks = newlinks
+            oldslivers = newslivers
             time.sleep(period)
     
 

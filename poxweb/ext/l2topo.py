@@ -66,11 +66,6 @@ class L2topo(object) :
         log.debug(switch)
         # Register in DB the related to the switch CONFINE info
         self.confine_register(switch,dpid)
-        # Find the CONFINE
-        #node = self.slice.find_switch(str(switch))
-        #sliver = self.slice.sliver_on_node(node)
-        #log.debug("Switch is on sliver "+sliver+" in node "+node)
-        #db.create_sliver(sliver,node,event.dpid,str(switch))
 
     # Find info abou the CONFINE node and sliver where the switch
     # is located, and store them in Django db
@@ -80,7 +75,25 @@ class L2topo(object) :
         log.debug("Switch is on sliver "+sliver+" in node "+node)
         db.create_sliver(sliver,node,dpid,str(switch))
 
-
+    def _handle_ConnectionDown (self, event):
+        log.debug("Switch %s has gone up.", dpid_to_str(event.dpid))
+        #ports = event.ofp.ports
+        dpid = event.dpid
+        #log.debug(ports)
+        
+        # Find OF switch address
+        #for p in ports:
+            #TODO Naming schema for switches
+        #    if p.name == 'br0' or p.name == 'br1' or p.name == 'br2':
+        #        switch = p.hw_addr
+                #log.debug(type(switch))
+        #log.debug('The switch address is')
+        #log.debug(switch)
+        # Register in DB the related to the switch CONFINE info
+        self.confine_deregister(dpid)
+    
+    def confine_deregister(self,dpid):
+        db.delete_sliver(str(dpid))
 
 def launch (slice_id = 51):
   log.debug('1')
