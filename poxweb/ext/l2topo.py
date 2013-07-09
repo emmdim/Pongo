@@ -59,6 +59,8 @@ class L2topo(object) :
         # Find OF switch address
         for p in ports:
             #TODO Naming schema for switches
+            # The following line should work but needs test
+            # if p.port_no == of.OFPP_LOCAL :
             if p.name == 'br0' or p.name == 'br1' or p.name == 'br2':
                 switch = p.hw_addr
                 #log.debug(type(switch))
