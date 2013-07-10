@@ -9,7 +9,7 @@ import db
 import dbpoll
 
 log = core.getLogger()
-    
+import pox.openflow.libopenflow_01 as of  
 
 class L2topo(object) :
     """
@@ -60,8 +60,10 @@ class L2topo(object) :
         for p in ports:
             #TODO Naming schema for switches
             # The following line should work but needs test
-            # if p.port_no == of.OFPP_LOCAL :
-            if p.name == 'br0' or p.name == 'br1' or p.name == 'br2':
+            if p.port_no == of.OFPP_LOCAL :
+            #if p.name == 'br0' or p.name == 'br1' or p.name == 'br2':
+                log.debug(p.name)
+                log.debug(p.port_no)
                 switch = p.hw_addr
                 #log.debug(type(switch))
         log.debug('The switch address is')
